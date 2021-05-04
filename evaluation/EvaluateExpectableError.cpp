@@ -7,17 +7,17 @@
 #include "camera/RenderingPipeline.hpp"
 #include "objects/WorldObject.hpp"
 
-using namespace providentia::evaluation;
+using namespace dynamic_stabilization::evaluation;
 
 /**
  * Setup to visualize the rendering pipeline.
  */
-class Setup : public providentia::evaluation::ImageSetup {
+class Setup : public dynamic_stabilization::evaluation::ImageSetup {
 public:
 	/**
 	 * The itnrinsics of the pinhole camera model.
 	 */
-	std::vector<double> intrinsics = providentia::camera::getS40NCamFarIntrinsics();
+	std::vector<double> intrinsics = dynamic_stabilization::camera::getS40NCamFarIntrinsics();
 
 	/**
 	 * The [width, height] of the image.
@@ -53,7 +53,7 @@ public:
 	}
 
 	Eigen::Matrix<double, 2, 1> render(double x, double y, double z, const cv::Vec3d &color) {
-		return providentia::camera::render(getActualPoint(translation).cast<double>(), rotation.cast<double>() / 10.,
+		return dynamic_stabilization::camera::render(getActualPoint(translation).cast<double>(), rotation.cast<double>() / 10.,
 										   intrinsics, Eigen::Vector4d(x, y, z, 1), color,
 										   finalFrame);
 	}

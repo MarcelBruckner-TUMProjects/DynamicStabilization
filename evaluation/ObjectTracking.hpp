@@ -11,7 +11,7 @@
 #include "Commons.hpp"
 #include "CSVWriter.hpp"
 
-namespace providentia {
+namespace dynamic_stabilization {
 	namespace evaluation {
 		class CSVWriter;
 

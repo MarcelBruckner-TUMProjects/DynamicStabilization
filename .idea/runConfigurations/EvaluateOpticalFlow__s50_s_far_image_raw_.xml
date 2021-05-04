@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="EvaluateOpticalFlow (s50_s_far_image_raw)" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-i /mnt/local_data/providentia/test_recordings/videos/old/s50_s_far_image_raw.mp4" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="DynamicStabilization" TARGET_NAME="EvaluateOpticalFlow" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="DynamicStabilization" RUN_TARGET_NAME="EvaluateOpticalFlow">
+    <method v="2">
+      <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+    </method>
+  </configuration>
+</component>

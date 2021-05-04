@@ -7,7 +7,7 @@
 #include <opencv2/cudaarithm.hpp>
 #include "opencv2/cudaoptflow.hpp"
 
-namespace providentia {
+namespace dynamic_stabilization {
 	namespace opticalflow {
 
 #pragma region DenseOpticalFlow

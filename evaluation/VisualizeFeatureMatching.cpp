@@ -3,52 +3,52 @@
 //
 
 #include "Commons.hpp"
-#include "matching/FeatureMatchingBase.hpp"
-#include "matching/BruteForceFeatureMatching.hpp"
+#include "DynamicStabilization/matching/FeatureMatchingBase.hpp"
+#include "DynamicStabilization/matching/BruteForceFeatureMatching.hpp"
 
-#include "detection/FeatureDetectionBase.hpp"
-#include "detection/SURFFeatureDetection.hpp"
+#include "DynamicStabilization/detection/FeatureDetectionBase.hpp"
+#include "DynamicStabilization/detection/SURFFeatureDetection.hpp"
 
 /**
  * Setup to visualize the feature matching.
  */
-class Setup : public providentia::evaluation::VideoSetup {
+class Setup : public dynamic_stabilization::evaluation::VideoSetup {
 private:
 	/**
 	 * The current frame feature detector applied in the main loop.
 	 */
-	std::shared_ptr<providentia::stabilization::detection::FeatureDetectionBase> frameDetector, referenceFrameDetector;
+	std::shared_ptr<dynamic_stabilization::stabilization::detection::FeatureDetectionBase> frameDetector, referenceFrameDetector;
 
 	/**
 	 * The matcher used to match the features.
 	 */
-	std::shared_ptr<providentia::stabilization::matching::FeatureMatchingBase> matcher, matcherWithoutFundamental;
+	std::shared_ptr<dynamic_stabilization::stabilization::matching::FeatureMatchingBase> matcher, matcherWithoutFundamental;
 
 public:
 	explicit Setup() : VideoSetup() {
-//        providentia::features::SIFTFeatureDetection detector(100);
-//        frameDetector = std::make_shared<providentia::features::SIFTFeatureDetection>(detector);
-//        referenceFrameDetector = std::make_shared<providentia::features::SIFTFeatureDetection>(detector);
+//        dynamic_stabilization::features::SIFTFeatureDetection detector(100);
+//        frameDetector = std::make_shared<dynamic_stabilization::features::SIFTFeatureDetection>(detector);
+//        referenceFrameDetector = std::make_shared<dynamic_stabilization::features::SIFTFeatureDetection>(detector);
 
-		providentia::stabilization::detection::SURFFeatureDetection detector;
-		frameDetector = std::make_shared<providentia::stabilization::detection::SURFFeatureDetection>(detector);
-		referenceFrameDetector = std::make_shared<providentia::stabilization::detection::SURFFeatureDetection>(
+		dynamic_stabilization::stabilization::detection::SURFFeatureDetection detector;
+		frameDetector = std::make_shared<dynamic_stabilization::stabilization::detection::SURFFeatureDetection>(detector);
+		referenceFrameDetector = std::make_shared<dynamic_stabilization::stabilization::detection::SURFFeatureDetection>(
 			detector);
 
-//        providentia::features::ORBFeatureDetection detector(1000);
-//        frameDetector = std::make_shared<providentia::features::ORBFeatureDetection>(detector);
-//        referenceFrameDetector = std::make_shared<providentia::features::ORBFeatureDetection>(detector);
+//        dynamic_stabilization::features::ORBFeatureDetection detector(1000);
+//        frameDetector = std::make_shared<dynamic_stabilization::features::ORBFeatureDetection>(detector);
+//        referenceFrameDetector = std::make_shared<dynamic_stabilization::features::ORBFeatureDetection>(detector);
 
-//        providentia::features::FastFREAKFeatureDetection detector;
-//        frameDetector = std::make_shared<providentia::features::FastFREAKFeatureDetection>(detector);
-//        referenceFrameDetector = std::make_shared<providentia::features::FastFREAKFeatureDetection>(detector);
+//        dynamic_stabilization::features::FastFREAKFeatureDetection detector;
+//        frameDetector = std::make_shared<dynamic_stabilization::features::FastFREAKFeatureDetection>(detector);
+//        referenceFrameDetector = std::make_shared<dynamic_stabilization::features::FastFREAKFeatureDetection>(detector);
 
-		matcher = std::make_shared<providentia::stabilization::matching::BruteForceFeatureMatching>(cv::NORM_L2);
-		matcherWithoutFundamental = std::make_shared<providentia::stabilization::matching::BruteForceFeatureMatching>
+		matcher = std::make_shared<dynamic_stabilization::stabilization::matching::BruteForceFeatureMatching>(cv::NORM_L2);
+		matcherWithoutFundamental = std::make_shared<dynamic_stabilization::stabilization::matching::BruteForceFeatureMatching>
 			(cv::NORM_L2);
 		matcherWithoutFundamental->setShouldUseFundamentalMatrix(false);
-//        matcher = std::make_shared<providentia::features::BruteForceFeatureMatching>(cv::NORM_HAMMING);
-//        matcher = std::make_shared<providentia::features::FlannFeatureMatching>(true);
+//        matcher = std::make_shared<dynamic_stabilization::features::BruteForceFeatureMatching>(cv::NORM_HAMMING);
+//        matcher = std::make_shared<dynamic_stabilization::features::FlannFeatureMatching>(true);
 
 
 	}

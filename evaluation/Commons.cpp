@@ -12,7 +12,7 @@
 
 #pragma region Helpers
 
-std::string providentia::evaluation::getDefaultVideoFile() {
+std::string dynamic_stabilization::evaluation::getDefaultVideoFile() {
 	std::string basePath = "/mnt/local_data/providentia/test_recordings/videos/";
 	std::string filename = "s40_n_far_image_raw";
 	std::string suffix = ".mp4";
@@ -21,7 +21,7 @@ std::string providentia::evaluation::getDefaultVideoFile() {
 	return fullPath.str();
 }
 
-cv::VideoCapture providentia::evaluation::openVideoCapture(const std::string &videoFileName) {
+cv::VideoCapture dynamic_stabilization::evaluation::openVideoCapture(const std::string &videoFileName) {
 	cv::VideoCapture cap(videoFileName);
 
 	if (!cap.isOpened()) // if not success, exit program
@@ -32,41 +32,41 @@ cv::VideoCapture providentia::evaluation::openVideoCapture(const std::string &vi
 	return cap;
 }
 
-std::string providentia::evaluation::durationInfo(const std::string &message, long milliseconds) {
+std::string dynamic_stabilization::evaluation::durationInfo(const std::string &message, long milliseconds) {
 	std::stringstream ss;
 	ss << message << " - Duration: " << milliseconds << "ms - FPS: " << 1000. / milliseconds;
 	return ss.str();
 }
 
-cv::Mat providentia::evaluation::addText(const cv::Mat &frame, const std::string &text, double fontSize, int x, int y,
+cv::Mat dynamic_stabilization::evaluation::addText(const cv::Mat &frame, const std::string &text, double fontSize, int x, int y,
 										 cv::Scalar color) {
 	cv::putText(frame, text, cv::Point(x, y + 20 * fontSize),
 				cv::FONT_HERSHEY_COMPLEX_SMALL, fontSize, color, fontSize, cv::FONT_HERSHEY_SIMPLEX);
 	return frame;
 }
 
-cv::cuda::GpuMat providentia::evaluation::pad(const cv::cuda::GpuMat &frame, int padding) {
+cv::cuda::GpuMat dynamic_stabilization::evaluation::pad(const cv::cuda::GpuMat &frame, int padding) {
 	cv::cuda::GpuMat result;
 	result.upload(pad(cv::Mat(frame), padding));
 	return result;
 }
 
-cv::Mat providentia::evaluation::pad(const cv::Mat &frame, int padding) {
+cv::Mat dynamic_stabilization::evaluation::pad(const cv::Mat &frame, int padding) {
 	return cv::Mat(frame,
 				   cv::Rect(padding, padding, frame.cols - 2 * padding, frame.rows - 2 * padding));
 }
 
-cv::Mat providentia::evaluation::addRuntimeToFrame(const cv::Mat &_frame, const std::string &message,
+cv::Mat dynamic_stabilization::evaluation::addRuntimeToFrame(const cv::Mat &_frame, const std::string &message,
 												   long milliseconds, double fontSize, int x, int y) {
 	return addText(_frame, durationInfo(message, milliseconds), fontSize, x, y);
 }
 
-double providentia::evaluation::getRandom01() {
+double dynamic_stabilization::evaluation::getRandom01() {
 	return static_cast<double>(rand() / static_cast<double>(RAND_MAX));
 }
 
 template<typename T>
-std::vector<cv::Mat> providentia::evaluation::concatenate(const std::initializer_list<T> &frames, int padding, cv::Size
+std::vector<cv::Mat> dynamic_stabilization::evaluation::concatenate(const std::initializer_list<T> &frames, int padding, cv::Size
 size) {
 	std::vector<cv::Mat> concatenated;
 	cv::Mat resizeBuffer;
@@ -92,46 +92,46 @@ size) {
 }
 
 template<typename T>
-cv::Mat providentia::evaluation::vconcat(const std::initializer_list<T> &frames, int padding, cv::Size size) {
+cv::Mat dynamic_stabilization::evaluation::vconcat(const std::initializer_list<T> &frames, int padding, cv::Size size) {
 	cv::Mat result;
 	cv::vconcat(concatenate<T>(frames, padding, size), result);
 	return result;
 }
 
-template cv::Mat providentia::evaluation::vconcat(const std::initializer_list<cv::Mat> &, int padding, cv::Size size);
+template cv::Mat dynamic_stabilization::evaluation::vconcat(const std::initializer_list<cv::Mat> &, int padding, cv::Size size);
 
 template cv::Mat
-providentia::evaluation::vconcat(const std::initializer_list<cv::cuda::GpuMat> &, int padding, cv::Size size);
+dynamic_stabilization::evaluation::vconcat(const std::initializer_list<cv::cuda::GpuMat> &, int padding, cv::Size size);
 
 template<typename T>
-cv::Mat providentia::evaluation::hconcat(const std::initializer_list<T> &frames, int padding, cv::Size size) {
+cv::Mat dynamic_stabilization::evaluation::hconcat(const std::initializer_list<T> &frames, int padding, cv::Size size) {
 	cv::Mat result;
 	cv::hconcat(concatenate<T>(frames, padding, size), result);
 	return result;
 }
 
-template cv::Mat providentia::evaluation::hconcat(const std::initializer_list<cv::Mat> &, int padding, cv::Size size);
+template cv::Mat dynamic_stabilization::evaluation::hconcat(const std::initializer_list<cv::Mat> &, int padding, cv::Size size);
 
 template cv::Mat
-providentia::evaluation::hconcat(const std::initializer_list<cv::cuda::GpuMat> &, int padding, cv::Size size);
+dynamic_stabilization::evaluation::hconcat(const std::initializer_list<cv::cuda::GpuMat> &, int padding, cv::Size size);
 
-cv::Mat providentia::evaluation::MatOfSize(cv::Size size, int type) {
+cv::Mat dynamic_stabilization::evaluation::MatOfSize(cv::Size size, int type) {
 	return cv::Mat(cv::Mat::zeros(std::move(size), type));
 }
 
-cv::cuda::GpuMat providentia::evaluation::GpuMatOfSize(cv::Size size, int type) {
+cv::cuda::GpuMat dynamic_stabilization::evaluation::GpuMatOfSize(cv::Size size, int type) {
 	cv::cuda::GpuMat mat;
 	mat.upload(cv::Mat(cv::Mat::zeros(std::move(size), type)));
 	return mat;
 }
 
-cv::cuda::GpuMat providentia::evaluation::cvtColor(cv::cuda::GpuMat frame, int colorSpace) {
+cv::cuda::GpuMat dynamic_stabilization::evaluation::cvtColor(cv::cuda::GpuMat frame, int colorSpace) {
 	cv::cuda::GpuMat result;
 	cv::cuda::cvtColor(frame, result, colorSpace);
 	return result;
 }
 
-std::string providentia::evaluation::getNowSuffix() {
+std::string dynamic_stabilization::evaluation::getNowSuffix() {
 	auto now = getNow();
 	auto date = now.date();
 	auto day = now.time_of_day();
@@ -145,7 +145,7 @@ std::string providentia::evaluation::getNowSuffix() {
 	return ss.str();
 }
 
-boost::posix_time::ptime providentia::evaluation::getNow() {
+boost::posix_time::ptime dynamic_stabilization::evaluation::getNow() {
 	return boost::posix_time::second_clock::local_time();
 }
 
@@ -153,7 +153,7 @@ boost::posix_time::ptime providentia::evaluation::getNow() {
 
 #pragma region RunnablesCommons
 
-providentia::evaluation::ImageSetup::ImageSetup(std::string inputFrame,
+dynamic_stabilization::evaluation::ImageSetup::ImageSetup(std::string inputFrame,
 												std::string outputFolder,
 												std::string windowName,
 												double _calculationScaleFactor,
@@ -163,7 +163,7 @@ providentia::evaluation::ImageSetup::ImageSetup(std::string inputFrame,
 	  windowName(std::move(windowName)),
 	  outputFolder(outputFolder) {}
 
-void providentia::evaluation::ImageSetup::init() {
+void dynamic_stabilization::evaluation::ImageSetup::init() {
 	renderingScaleFactor /= calculationScaleFactor;
 	if (!dontRenderFinalFrame) {
 		cv::namedWindow(windowName, cv::WINDOW_AUTOSIZE);
@@ -173,25 +173,25 @@ void providentia::evaluation::ImageSetup::init() {
 	frameCPU = cv::imread(inputResource);
 }
 
-void providentia::evaluation::ImageSetup::setWindowMode(int flags) {
+void dynamic_stabilization::evaluation::ImageSetup::setWindowMode(int flags) {
 	cv::destroyWindow(windowName);
 	cv::namedWindow(windowName, flags);
 }
 
-void providentia::evaluation::ImageSetup::addRuntimeToFinalFrame(const std::string &text, long milliseconds, int x,
+void dynamic_stabilization::evaluation::ImageSetup::addRuntimeToFinalFrame(const std::string &text, long milliseconds, int x,
 																 int y) {
 	addTextToFinalFrame(durationInfo(text, milliseconds), x, y);
 }
 
-void providentia::evaluation::ImageSetup::addTextToFinalFrame(const std::string &text, int x, int y) {
+void dynamic_stabilization::evaluation::ImageSetup::addTextToFinalFrame(const std::string &text, int x, int y) {
 	addText(finalFrame, text, 1, x, y);
 }
 
-void providentia::evaluation::ImageSetup::getNextFrame() {
+void dynamic_stabilization::evaluation::ImageSetup::getNextFrame() {
 //pass
 }
 
-void providentia::evaluation::ImageSetup::mainLoop() {
+void dynamic_stabilization::evaluation::ImageSetup::mainLoop() {
 	init();
 	while (true) {
 		clear();
@@ -241,26 +241,26 @@ void providentia::evaluation::ImageSetup::mainLoop() {
 	}
 }
 
-void providentia::evaluation::ImageSetup::specificAddMessages() {
+void dynamic_stabilization::evaluation::ImageSetup::specificAddMessages() {
 	// Empty stub for optional override.
 }
 
-void providentia::evaluation::ImageSetup::setCalculationScaleFactor(double _calculationScaleFactor) {
+void dynamic_stabilization::evaluation::ImageSetup::setCalculationScaleFactor(double _calculationScaleFactor) {
 	calculationScaleFactor = _calculationScaleFactor;
 }
 
-void providentia::evaluation::ImageSetup::setRenderingScaleFactor(double _renderingScaleFactor) {
+void dynamic_stabilization::evaluation::ImageSetup::setRenderingScaleFactor(double _renderingScaleFactor) {
 	renderingScaleFactor = _renderingScaleFactor;
 }
 
-void providentia::evaluation::ImageSetup::setOutputFolder(const std::string &_outputFolder) {
+void dynamic_stabilization::evaluation::ImageSetup::setOutputFolder(const std::string &_outputFolder) {
 	outputFolder = _outputFolder;
 	if (!boost::filesystem::is_directory(outputFolder)) {
 		boost::filesystem::create_directories(outputFolder);
 	}
 }
 
-boost::program_options::variables_map providentia::evaluation::ImageSetup::fromCLI(int argc, const char **argv) {
+boost::program_options::variables_map dynamic_stabilization::evaluation::ImageSetup::fromCLI(int argc, const char **argv) {
 	po::options_description desc("Allowed options");
 	desc.add_options()
 		("help,h", "produce help message");
@@ -294,29 +294,29 @@ boost::program_options::variables_map providentia::evaluation::ImageSetup::fromC
 	return vm;
 }
 
-void providentia::evaluation::ImageSetup::addInputOption(po::options_description *desc) {
+void dynamic_stabilization::evaluation::ImageSetup::addInputOption(po::options_description *desc) {
 	desc->add_options()("input,i", po::value<std::string>()->default_value("../misc/test_frame.png"),
 						"The input resource.");
 }
 
-void providentia::evaluation::ImageSetup::addAdditionalOptions(po::options_description *desc) {
+void dynamic_stabilization::evaluation::ImageSetup::addAdditionalOptions(po::options_description *desc) {
 	// Empty for override
 }
 
-void providentia::evaluation::ImageSetup::setWriteFrames(bool writeFrames) {
+void dynamic_stabilization::evaluation::ImageSetup::setWriteFrames(bool writeFrames) {
 	ImageSetup::writeFrames = writeFrames;
 }
 
 #pragma endregion RunnablesCommons
 
-void providentia::evaluation::VideoSetup::setCapture(const std::string &file) {
+void dynamic_stabilization::evaluation::VideoSetup::setCapture(const std::string &file) {
 	if (capture.isOpened()) {
 		capture.release();
 	}
 	capture = openVideoCapture(file);
 }
 
-providentia::evaluation::VideoSetup::VideoSetup(std::string _videoFileName,
+dynamic_stabilization::evaluation::VideoSetup::VideoSetup(std::string _videoFileName,
 												std::string outputFolder,
 												std::string _windowName,
 												double _calculationScaleFactor,
@@ -324,25 +324,25 @@ providentia::evaluation::VideoSetup::VideoSetup(std::string _videoFileName,
 	: ImageSetup(std::move(_videoFileName), std::move(outputFolder), std::move(_windowName), _calculationScaleFactor,
 				 _renderingScaleFactor) {}
 
-providentia::evaluation::VideoSetup::~VideoSetup() {
+dynamic_stabilization::evaluation::VideoSetup::~VideoSetup() {
 	capture.release();
 	cv::destroyAllWindows();
 }
 
-void providentia::evaluation::VideoSetup::getNextFrame() {
+void dynamic_stabilization::evaluation::VideoSetup::getNextFrame() {
 	capture >> frameCPU;
 }
 
-boost::program_options::variables_map providentia::evaluation::VideoSetup::fromCLI(int argc, const char **argv) {
+boost::program_options::variables_map dynamic_stabilization::evaluation::VideoSetup::fromCLI(int argc, const char **argv) {
 	return ImageSetup::fromCLI(argc, argv);
 }
 
-void providentia::evaluation::VideoSetup::addInputOption(po::options_description *desc) {
+void dynamic_stabilization::evaluation::VideoSetup::addInputOption(po::options_description *desc) {
 	desc->add_options()("input,i", po::value<std::string>()->default_value(getDefaultVideoFile()),
 						"The input resource.");
 }
 
-void providentia::evaluation::VideoSetup::init() {
+void dynamic_stabilization::evaluation::VideoSetup::init() {
 	ImageSetup::init();
 	capture = openVideoCapture(inputResource);
 }

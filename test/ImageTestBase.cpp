@@ -4,7 +4,7 @@
 
 #include "ImageTestBase.hpp"
 
-namespace providentia {
+namespace dynamic_stabilization {
 	namespace tests {
 		void ImageTestBase::SetUp() {
 			Test::SetUp();

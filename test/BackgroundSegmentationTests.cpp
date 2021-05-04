@@ -3,10 +3,10 @@
 //
 #include "gtest/gtest.h"
 #include "ImageTestBase.hpp"
-#include "segmentation/MOG2BackgroundSegmentation.hpp"
+#include "DynamicStabilization/segmentation/MOG2BackgroundSegmentation.hpp"
 #include <iostream>
 
-namespace providentia {
+namespace dynamic_stabilization {
 	namespace tests {
 
 		/**
@@ -24,7 +24,7 @@ namespace providentia {
 		 * Tests that the MOG2 background segmentor gives a only black mask for all the same image.
 		 */
 		TEST_F(BackgroundSegmentationTests, testMOG2BackgroundSubtractorRuns) {
-			providentia::stabilization::segmentation::MOG2BackgroundSegmentation segmentor;
+			dynamic_stabilization::stabilization::segmentation::MOG2BackgroundSegmentation segmentor;
 			for (int i = 0; i < 20; i++) {
 				segmentor.segment(testImgGPU);
 			}

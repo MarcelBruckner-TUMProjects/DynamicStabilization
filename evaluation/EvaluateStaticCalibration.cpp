@@ -16,19 +16,19 @@
 #include <boost/algorithm/string/trim.hpp>
 #include "glog/logging.h"
 
-using namespace providentia::evaluation;
+using namespace dynamic_stabilization::evaluation;
 
 /**
  * Setup to visualize the rendering pipeline.
  */
-class Setup : public providentia::evaluation::ImageSetup {
+class Setup : public dynamic_stabilization::evaluation::ImageSetup {
 public:
 	/**
 	 * The itnrinsics of the pinhole camera model.
 	 */
 	std::vector<double> initialIntrinsics;
 	std::vector<double> intrinsics;
-	std::shared_ptr<providentia::calibration::CameraPoseEstimation> estimator;
+	std::shared_ptr<dynamic_stabilization::calibration::CameraPoseEstimation> estimator;
 
 	/**
 	 * The [width, height] of the image.
@@ -71,7 +71,7 @@ public:
 	/**
 	 * The objects from the HD map.
 	 */
-	std::vector<providentia::calibration::WorldObject> objects;
+	std::vector<dynamic_stabilization::calibration::WorldObject> objects;
 
 	bool optimizationFinished = false;
 
@@ -102,7 +102,7 @@ public:
 						intrinsics.emplace_back(boost::lexical_cast<double>(boost::trim_copy(value)));
 					};
 		initialIntrinsics = intrinsics;
-		std::cout << providentia::camera::getIntrinsicsMatrix(initialIntrinsics.data()) << std::endl;
+		std::cout << dynamic_stabilization::camera::getIntrinsicsMatrix(initialIntrinsics.data()) << std::endl;
 		pixelsFile = vm["pixels"].as<std::string>();
 //		initialRotation.z() = vm["z_init"].as<int>();
 		return vm;
@@ -164,8 +164,8 @@ public:
 
 		objectsFile = (boost::filesystem::path(inputResource).parent_path() / "objects.yaml").string();
 
-		objects = providentia::calibration::loadObjects(objectsFile, pixelsFile, imageSize);
-		estimator = std::make_shared<providentia::calibration::CameraPoseEstimation>();
+		objects = dynamic_stabilization::calibration::loadObjects(objectsFile, pixelsFile, imageSize);
+		estimator = std::make_shared<dynamic_stabilization::calibration::CameraPoseEstimation>();
 		estimator->addWorldObjects(objects);
 		if (!dontRenderFinalFrame) {
 			cv::createTrackbar("Background", windowName, &trackbarBackground, 10);
@@ -181,7 +181,7 @@ public:
 
 	void render(std::string id, double x, double y, double z, const cv::Vec3d &color, bool showId) {
 		Eigen::Vector4d vector{x, y, z, 1};
-		Eigen::Vector4d vectorInCameraSpace = providentia::camera::toCameraSpace(
+		Eigen::Vector4d vectorInCameraSpace = dynamic_stabilization::camera::toCameraSpace(
 			translation.data(), rotation.data(), vector.data());
 
 		if (std::abs(vectorInCameraSpace.z()) > 2000) {
@@ -189,7 +189,7 @@ public:
 		}
 
 		bool flipped;
-		auto pixel = providentia::camera::render(translation, rotation,
+		auto pixel = dynamic_stabilization::camera::render(translation, rotation,
 												 intrinsics, vector, color,
 												 finalFrame, flipped);
 
@@ -348,7 +348,7 @@ protected:
 
 //			estimator.reset();
 //			auto count = estimator.unique();
-//			estimator = std::make_shared<providentia::calibration::CameraPoseEstimation>(intrinsics, true,
+//			estimator = std::make_shared<dynamic_stabilization::calibration::CameraPoseEstimation>(intrinsics, true,
 //																						powBase2(weightScale));
 			estimator->setWeightPenalizeScale(powBase2(weightScale));
 			estimator->addWorldObjects(objects);

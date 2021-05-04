@@ -47,21 +47,16 @@ find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 ########################################################################################################################
 ### TESTING ###
 ########################################################################################################################
-add_executable(Tests ImageTestBase.cpp CameraTestBase.cpp
+add_executable(Tests ImageTestBase.cpp
         FeatureDetectorTests.cpp
         FeatureMatcherTests.cpp
         DynamicStabilizationTests.cpp
         BackgroundSegmentationTests.cpp
-        RenderingPipelineTests.cpp
-        CameraPoseEstimationTests.cpp
-        ResidualsTests.cpp
-        ObjectsLoadingTests.cpp
         )
 target_link_libraries(Tests
         PUBLIC DynamicStabilization
-        PUBLIC StaticCalibration
         gtest_main ${OpenCV_LIBS} Eigen3::Eigen)
-target_include_directories(Tests PUBLIC tests "${PROJECT_BINARY_DIR}")
+target_include_directories(Tests PUBLIC tests "${PROJECT_BINARY_DIR}" ${PROJECT_SOURCE_DIR}/include)
 
-include_directories(../misc/)
+include_directories(${PROJECT_SOURCE_DIR}/misc/)
 add_test(AllTests Tests)

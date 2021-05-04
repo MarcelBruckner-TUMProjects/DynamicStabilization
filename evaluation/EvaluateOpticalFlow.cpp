@@ -3,17 +3,17 @@
 //
 #include <opencv2/cudawarping.hpp>
 
-#include "DynamicStabilizationBase.hpp"
-#include "SURFBFDynamicStabilization.hpp"
-#include "ORBBFDynamicStabilization.hpp"
-#include "FastFREAKBFDynamicStabilization.hpp"
+#include "DynamicStabilization/DynamicStabilizationBase.hpp"
+#include "DynamicStabilization/SURFBFDynamicStabilization.hpp"
+#include "DynamicStabilization/ORBBFDynamicStabilization.hpp"
+#include "DynamicStabilization/FastFREAKBFDynamicStabilization.hpp"
 
 #include "OpticalFlow.hpp"
 #include "Commons.hpp"
 #include "CSVWriter.hpp"
 #include <boost/filesystem/convenience.hpp>
 
-using namespace providentia::evaluation;
+using namespace dynamic_stabilization::evaluation;
 
 /**
  * Setup to visualize the total stabilization algorithm.
@@ -23,13 +23,13 @@ private:
 	/**
 	 * The matcher used to match the features.
 	 */
-	std::vector<providentia::stabilization::DynamicStabilizationBase> stabilizers;
+	std::vector<dynamic_stabilization::stabilization::DynamicStabilizationBase> stabilizers;
 	std::vector<std::string> stabilizerNames = {
 		"SURF",
 //		"ORB",
 //		"FAST"
 	};
-	std::vector<providentia::opticalflow::FarnebackDenseOpticalFlow> opticalFlows;
+	std::vector<dynamic_stabilization::opticalflow::FarnebackDenseOpticalFlow> opticalFlows;
 
 	std::shared_ptr<::CSVWriter> csvWriter;
 	std::shared_ptr<::CSVWriter> timeWriter;
@@ -42,9 +42,9 @@ private:
 
 public:
 	explicit Setup() : VideoSetup() {
-		stabilizers.emplace_back(providentia::stabilization::SURFBFDynamicStabilization{});
-//		stabilizers.emplace_back(providentia::stabilization::ORBBFDynamicStabilization{});
-//		stabilizers.emplace_back(providentia::stabilization::FastFREAKBFDynamicStabilization{});
+		stabilizers.emplace_back(dynamic_stabilization::stabilization::SURFBFDynamicStabilization{});
+//		stabilizers.emplace_back(dynamic_stabilization::stabilization::ORBBFDynamicStabilization{});
+//		stabilizers.emplace_back(dynamic_stabilization::stabilization::FastFREAKBFDynamicStabilization{});
 
 		for (int i = 0; i <= stabilizers.size(); i++) {
 			opticalFlows.emplace_back();

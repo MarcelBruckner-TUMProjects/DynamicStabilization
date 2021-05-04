@@ -6,10 +6,8 @@
 #define CAMERASTABILIZATION_COMMONS_HPP
 
 #include <stdexcept>
-#include <camera/RenderingPipeline.hpp>
 #include "opencv2/opencv.hpp"
-#include "TimeMeasurable.hpp"
-#include "Eigen/Dense"
+#include "DynamicStabilization/TimeMeasurable.hpp"
 #include "OpticalFlow.hpp"
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
@@ -20,7 +18,7 @@
 
 namespace po = boost::program_options;
 
-namespace providentia {
+namespace dynamic_stabilization {
 	namespace evaluation {
 
 		boost::posix_time::ptime getNow();
@@ -111,7 +109,7 @@ namespace providentia {
 		 * Base class for all evaluation setups that run on a video.
 		 * Wraps the main loop and field initializations.
 		 */
-		class ImageSetup : public providentia::utils::TimeMeasurable {
+		class ImageSetup : public dynamic_stabilization::utils::TimeMeasurable {
 		protected:
 			/**
 			 * The current CPU frame.

@@ -3,12 +3,12 @@
 //
 #include "gtest/gtest.h"
 #include "ImageTestBase.hpp"
-#include "detection/SURFFeatureDetection.hpp"
-#include "matching/BruteForceFeatureMatching.hpp"
-#include "matching/FlannFeatureMatching.hpp"
+#include "DynamicStabilization/detection/SURFFeatureDetection.hpp"
+#include "DynamicStabilization/matching/BruteForceFeatureMatching.hpp"
+#include "DynamicStabilization/matching/FlannFeatureMatching.hpp"
 #include <iostream>
 
-namespace providentia {
+namespace dynamic_stabilization {
 	namespace tests {
 
 		/**
@@ -25,10 +25,10 @@ namespace providentia {
 			/**
 			 * Asserts that the given matcher can match two identical sets of features perfectly.
 			 */
-			void assertMatcher(providentia::stabilization::matching::FeatureMatchingBase *matcher) {
-				auto options = providentia::stabilization::detection::SURFFeatureDetection::Options();
+			void assertMatcher(dynamic_stabilization::stabilization::matching::FeatureMatchingBase *matcher) {
+				auto options = dynamic_stabilization::stabilization::detection::SURFFeatureDetection::Options();
 				options.hessianThreshold = 1000;
-				auto detector = std::make_shared<providentia::stabilization::detection::SURFFeatureDetection>(options);
+				auto detector = std::make_shared<dynamic_stabilization::stabilization::detection::SURFFeatureDetection>(options);
 				detector->detect(testImgGPU);
 
 				matcher->match(detector, detector);
@@ -46,14 +46,14 @@ namespace providentia {
 		 * Tests the Brute Force feature matcher.
 		 */
 		TEST_F(FeatureMatcherTests, testBruteForceFeatureMatcherRuns) {
-			assertMatcher(new providentia::stabilization::matching::BruteForceFeatureMatching(cv::NORM_L2));
+			assertMatcher(new dynamic_stabilization::stabilization::matching::BruteForceFeatureMatching(cv::NORM_L2));
 		}
 
 		/**
 		 * Tests the Flann feature matcher
 		 */
 		TEST_F(FeatureMatcherTests, testFlannFeatureMatcherRuns) {
-			assertMatcher(new providentia::stabilization::matching::FlannFeatureMatching());
+			assertMatcher(new dynamic_stabilization::stabilization::matching::FlannFeatureMatching());
 		}
 	}
 }

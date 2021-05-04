@@ -3,10 +3,10 @@
 //
 #include <opencv2/cudawarping.hpp>
 
-#include "DynamicStabilizationBase.hpp"
-#include "SURFBFDynamicStabilization.hpp"
-#include "ORBBFDynamicStabilization.hpp"
-#include "FastFREAKBFDynamicStabilization.hpp"
+#include "DynamicStabilization/DynamicStabilizationBase.hpp"
+#include "DynamicStabilization/SURFBFDynamicStabilization.hpp"
+#include "DynamicStabilization/ORBBFDynamicStabilization.hpp"
+#include "DynamicStabilization/FastFREAKBFDynamicStabilization.hpp"
 
 #include "Commons.hpp"
 #include "CSVWriter.hpp"
@@ -14,10 +14,10 @@
 #include "ObjectTracking.hpp"
 #include <boost/algorithm/string.hpp>
 #include <boost/foreach.hpp>
-#include "warping/FrameWarping.hpp"
+#include "DynamicStabilization/warping/FrameWarping.hpp"
 #include "Color.hpp"
 
-using namespace providentia::evaluation;
+using namespace dynamic_stabilization::evaluation;
 
 /**
  * Setup to visualize the total stabilization algorithm.
@@ -27,7 +27,7 @@ private:
 	/**
 	 * The matcher used to match the features.
 	 */
-	std::vector<providentia::stabilization::DynamicStabilizationBase> stabilizers;
+	std::vector<dynamic_stabilization::stabilization::DynamicStabilizationBase> stabilizers;
 	std::vector<std::string> stabilizerNames = {"Original"};
 
 	ObjectTracking tracking;
@@ -86,9 +86,9 @@ public:
 	void init() override {
 		VideoSetup::init();
 		for (int i = 0; i < numParallelRuns; i++) {
-			stabilizers.emplace_back(providentia::stabilization::SURFBFDynamicStabilization());
-//			stabilizers.emplace_back(providentia::stabilization::ORBBFDynamicStabilization());
-//			stabilizers.emplace_back(providentia::stabilization::FastFREAKBFDynamicStabilization());
+			stabilizers.emplace_back(dynamic_stabilization::stabilization::SURFBFDynamicStabilization());
+//			stabilizers.emplace_back(dynamic_stabilization::stabilization::ORBBFDynamicStabilization());
+//			stabilizers.emplace_back(dynamic_stabilization::stabilization::FastFREAKBFDynamicStabilization());
 			stabilizerNames.emplace_back("SURF");
 //			stabilizerNames.emplace_back("ORB");
 //			stabilizerNames.emplace_back("Fast");
@@ -137,18 +137,18 @@ public:
 //			resultFrames.emplace_back(
 //				::addText(
 //					(tracking * homographies[i]).draw(
-//						cv::Mat(providentia::stabilization::FrameWarping::warp(frameGPU, homographies[i]))
+//						cv::Mat(dynamic_stabilization::stabilization::FrameWarping::warp(frameGPU, homographies[i]))
 //					), stabilizerNames[i] + " - Frame: " + std::to_string(frameId), 2, 5,
 //					frameCPU.rows - 50)
 //			);
 			resultFrames.emplace_back(
 				(tracking * homographies[i]).draw(
-					cv::Mat(providentia::stabilization::FrameWarping::warp(frameGPU, homographies[i]))
+					cv::Mat(dynamic_stabilization::stabilization::FrameWarping::warp(frameGPU, homographies[i]))
 				)
 			);
 		}
 
-		std::vector<providentia::evaluation::ObjectTracking> warpedTrackers;
+		std::vector<dynamic_stabilization::evaluation::ObjectTracking> warpedTrackers;
 		for (auto &homographie : homographies) {
 			warpedTrackers.emplace_back(tracking * homographie);
 		}

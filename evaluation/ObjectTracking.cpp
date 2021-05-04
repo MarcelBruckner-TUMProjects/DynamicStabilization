@@ -6,7 +6,7 @@
 #include <opencv2/tracking.hpp>
 #include <utility>
 
-namespace providentia {
+namespace dynamic_stabilization {
 	namespace evaluation {
 		const std::string TrackerWrapper::TRACKER_TYPES[] = {"MIL", "KCF", "CSRT"};
 

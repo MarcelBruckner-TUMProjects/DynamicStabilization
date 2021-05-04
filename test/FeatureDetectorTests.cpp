@@ -3,15 +3,15 @@
 //
 #include "gtest/gtest.h"
 #include "ImageTestBase.hpp"
-#include "detection/FeatureDetectionBase.hpp"
-#include "detection/SURFFeatureDetection.hpp"
-#include "detection/ORBFeatureDetection.hpp"
-#include "detection/FastFREAKFeatureDetection.hpp"
-#include "detection/StarBRIEFFeatureDetection.hpp"
-#include "detection/SIFTFeatureDetection.hpp"
+#include "DynamicStabilization/detection/FeatureDetectionBase.hpp"
+#include "DynamicStabilization/detection/SURFFeatureDetection.hpp"
+#include "DynamicStabilization/detection/ORBFeatureDetection.hpp"
+#include "DynamicStabilization/detection/FastFREAKFeatureDetection.hpp"
+#include "DynamicStabilization/detection/StarBRIEFFeatureDetection.hpp"
+#include "DynamicStabilization/detection/SIFTFeatureDetection.hpp"
 #include <iostream>
 
-namespace providentia {
+namespace dynamic_stabilization {
 	namespace tests {
 
 		/**
@@ -37,7 +37,7 @@ namespace providentia {
 			 * @param nFeatures The number of keypoints to expect.
 			 */
 			void
-			getSortedKeypoints(providentia::stabilization::detection::FeatureDetectionBase *detector, int nFeatures) {
+			getSortedKeypoints(dynamic_stabilization::stabilization::detection::FeatureDetectionBase *detector, int nFeatures) {
 				detector->detect(testImgGPU);
 				keypoints = detector->getKeypoints();
 				ASSERT_EQ(keypoints.size(), nFeatures);
@@ -71,9 +71,9 @@ namespace providentia {
 		 * Tests the SURF feature detector.
 		 */
 		TEST_F(FeatureDetectionTests, testSURFFeatureDetectionRuns) {
-			auto options = providentia::stabilization::detection::SURFFeatureDetection::Options();
+			auto options = dynamic_stabilization::stabilization::detection::SURFFeatureDetection::Options();
 			options.hessianThreshold = 1000;
-			getSortedKeypoints(new providentia::stabilization::detection::SURFFeatureDetection(options), 3104);
+			getSortedKeypoints(new dynamic_stabilization::stabilization::detection::SURFFeatureDetection(options), 3104);
 
 			assertFirst(13.27, 0.01, 387.006, 0.01);
 			assertLast(1895.82, 0.01, 1051.98, 0.01);
@@ -83,9 +83,9 @@ namespace providentia {
 		 * Tests the ORB feature detector.
 		 */
 		TEST_F(FeatureDetectionTests, testORBFeatureDetectionRuns) {
-			auto options = providentia::stabilization::detection::ORBFeatureDetection::Options();
+			auto options = dynamic_stabilization::stabilization::detection::ORBFeatureDetection::Options();
 			options.nfeatures = 1000;
-			getSortedKeypoints(new providentia::stabilization::detection::ORBFeatureDetection(options), 1000);
+			getSortedKeypoints(new dynamic_stabilization::stabilization::detection::ORBFeatureDetection(options), 1000);
 
 			assertFirst(112, 0.01, 323, 0.01);
 			assertLast(1852.80, 0.01, 378, 0.01);
@@ -95,9 +95,9 @@ namespace providentia {
 		 * Tests the SIFT feature detector.
 		 */
 		TEST_F(FeatureDetectionTests, testSIFTFeatureDetectionRuns) {
-			auto options = providentia::stabilization::detection::SIFTFeatureDetection::Options();
+			auto options = dynamic_stabilization::stabilization::detection::SIFTFeatureDetection::Options();
 			options.nfeatures = 1000;
-			getSortedKeypoints(new providentia::stabilization::detection::SIFTFeatureDetection(options), 1000);
+			getSortedKeypoints(new dynamic_stabilization::stabilization::detection::SIFTFeatureDetection(options), 1000);
 
 			assertFirst(13.86, 0.01, 387.17, 0.01);
 			assertLast(1886.65, 0.01, 1047.14, 0.01);
@@ -107,7 +107,7 @@ namespace providentia {
 		 * Tests the fast feature detector with FREAK descriptors.
 		 */
 		TEST_F(FeatureDetectionTests, testFastFREAKFeatureDetectionRuns) {
-			getSortedKeypoints(new providentia::stabilization::detection::FastFREAKFeatureDetection(), 5781);
+			getSortedKeypoints(new dynamic_stabilization::stabilization::detection::FastFREAKFeatureDetection(), 5781);
 
 			assertFirst(24, 0.01, 497, 0.01);
 			assertLast(1895, 0.01, 308, 0.01);
@@ -117,9 +117,9 @@ namespace providentia {
 		 * Tests the Star feature detector with BRIEF descriptors.
 		 */
 		TEST_F(FeatureDetectionTests, testStarBRIEFFeatureDetectionRuns) {
-			auto options = providentia::stabilization::detection::StarBRIEFFeatureDetection::Options();
+			auto options = dynamic_stabilization::stabilization::detection::StarBRIEFFeatureDetection::Options();
 			options.maxSize = 1000;
-			getSortedKeypoints(new providentia::stabilization::detection::StarBRIEFFeatureDetection(options), 1513);
+			getSortedKeypoints(new dynamic_stabilization::stabilization::detection::StarBRIEFFeatureDetection(options), 1513);
 
 			assertFirst(192, 0.01, 281, 0.01);
 			assertLast(1727, 0.01, 921, 0.01);

@@ -9,7 +9,7 @@
 #include "opencv2/opencv.hpp"
 #include <iostream>
 
-namespace providentia {
+namespace dynamic_stabilization {
 	namespace tests {
 
 		/**

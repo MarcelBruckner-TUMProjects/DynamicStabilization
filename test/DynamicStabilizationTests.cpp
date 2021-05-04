@@ -3,13 +3,13 @@
 //
 #include "gtest/gtest.h"
 #include "ImageTestBase.hpp"
-#include "DynamicStabilizationBase.hpp"
-#include "SURFBFDynamicStabilization.hpp"
-#include "ORBBFDynamicStabilization.hpp"
-#include "FastFREAKBFDynamicStabilization.hpp"
+#include "DynamicStabilization/DynamicStabilizationBase.hpp"
+#include "DynamicStabilization/SURFBFDynamicStabilization.hpp"
+#include "DynamicStabilization/ORBBFDynamicStabilization.hpp"
+#include "DynamicStabilization/FastFREAKBFDynamicStabilization.hpp"
 #include <iostream>
 
-namespace providentia {
+namespace dynamic_stabilization {
 	namespace tests {
 
 		/**
@@ -26,7 +26,7 @@ namespace providentia {
 			/**
 			 * Asserts that the given stabilizer runs and gives nearly the identity.
 			 */
-			void assertStabilization(providentia::stabilization::DynamicStabilizationBase *stabilizer) {
+			void assertStabilization(dynamic_stabilization::stabilization::DynamicStabilizationBase *stabilizer) {
 				stabilizer->stabilize(testImgGPU);
 
 				cv::Mat homography = stabilizer->getHomography();
@@ -68,21 +68,21 @@ namespace providentia {
 		 * Test for the stabilizer based on the SURF feature detector and Brute force matcher.
 		 */
 		TEST_F(DynamicStabilizationTests, testSURFBruteForceStabilizationRuns) {
-			assertStabilization(new providentia::stabilization::SURFBFDynamicStabilization());
+			assertStabilization(new dynamic_stabilization::stabilization::SURFBFDynamicStabilization());
 		}
 
 		/**
 		 * Test for the stabilizer based on the ORB feature detector and Brute force matcher.
 		 */
 		TEST_F(DynamicStabilizationTests, testORBBruteForceStabilizationRuns) {
-			assertStabilization(new providentia::stabilization::ORBBFDynamicStabilization());
+			assertStabilization(new dynamic_stabilization::stabilization::ORBBFDynamicStabilization());
 		}
 
 		/**
 		 * Test for the stabilizer based on the Fast feature detector, FREAK feature descriptors and Brute force matcher.
 		 */
 		TEST_F(DynamicStabilizationTests, testFastFREAKBruteForceStabilizationRuns) {
-			assertStabilization(new providentia::stabilization::FastFREAKBFDynamicStabilization());
+			assertStabilization(new dynamic_stabilization::stabilization::FastFREAKBFDynamicStabilization());
 		}
 	}
 }
